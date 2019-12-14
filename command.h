@@ -15,11 +15,12 @@ class Command {
 	string label;
 	string mnemonic;
 	string operand;
+	bool comment = false;
 	bool plus = false;
 	char flag = 0;
 public:
 	Command() = default;
-	Command(string line);
+	explicit Command(string line);
 
 	const string &getLabel() const;
 

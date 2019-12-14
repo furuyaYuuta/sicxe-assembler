@@ -63,6 +63,10 @@ class Assembler {
 public:
 	Assembler() = default;
 	Assembler(const string& inputFileName, const string& outputFileName);
+	void printCommands();
+	void pass1();
+	void pass2();
+//	~Assembler();
 };
 
 #endif //SICXE_ASSEMBLER_H

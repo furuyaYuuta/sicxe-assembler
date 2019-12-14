@@ -9,6 +9,10 @@ Command::Command(string line) {
 	stringstream ss(line);
 	if(line.empty())		// check if the string is empty
 		return;
+	else if(line[0] == '.') {	// check if the line is comment
+		comment = true;
+		return;
+	}
 	if(!isblank(line[0]))	// check if the label field exists
 		ss >> label;
 	ss >> mnemonic >> operand;
@@ -52,11 +56,15 @@ char Command::getFlag() const {
 
 string Command::str() const {
 	stringstream ss;
-	ss << setw(8) << label << " | "
-	   << setw(8) << mnemonic << " | "
-	   << setw(8) << operand << " | "
-	   << ( (plus) ? '+' : ' ' ) << " | "
-	   << flag;
+	if(comment)
+		ss << "This is a comment line.";
+	else {
+		ss << setw(8) << label << " | "
+		   << setw(8) << mnemonic << " | "
+		   << setw(8) << operand << " | "
+		   << ( (plus) ? '+' : ' ' ) << " | "
+		   << flag;
+	}
 
 	return ss.str();
 }
