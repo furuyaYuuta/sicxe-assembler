@@ -6,7 +6,8 @@ using namespace std;
 
 int main() {
     Assembler assembler("in.txt", "out.txt");
-    assembler.printCommands();
 	assembler.pass1();
+	assembler.printCommands();
+	assembler.printSymbolsTable();
     return 0;
 }

@@ -3,6 +3,7 @@
 //
 
 #include <iomanip>
+#include <regex>
 #include "command.h"
 
 Command::Command(string line) {
@@ -63,8 +64,43 @@ string Command::str() const {
 		   << setw(8) << mnemonic << " | "
 		   << setw(8) << operand << " | "
 		   << ( (plus) ? '+' : ' ' ) << " | "
-		   << flag;
+		   << flag << " | "
+		   << getDecimalOperand();
 	}
 
 	return ss.str();
+}
+
+bool Command::isComment() const {
+	return comment;
+}
+
+bool isNumber(const string &str) {
+	return !str.empty() && all_of(str.begin(), str.end(), ::isdigit);
+}
+
+int Command::getDecimalOperand() const {
+	static regex r(R"(([XC])\'([\da-dA-D\w]+)\')");
+	smatch match;
+	if(regex_match(operand, match, r)) {
+		char type = match[1].str()[0];
+		string val = match[2].str();
+		if(type == 'X')
+			return stoi(val, nullptr, 16);
+		else if(type == 'C') {
+			unsigned int bin = 0;
+			for(const auto& ch : val)
+				bin = (bin << (4*2)) + ch;
+			return (int)bin;
+		}
+	}
+	return (isNumber(operand)) ? stoi(operand) : -1;
+}
+
+int Command::getCharLength() const {
+	static regex r(R"(C\'([\da-dA-D\w]+)\')");
+	static smatch match;
+	if(regex_match(operand, match, r))
+		return match[1].str().length();
+	return 1;
 }

@@ -8,8 +8,12 @@
 #include <vector>
 #include <string>
 #include <sstream>
+#include <unordered_map>
 
 using namespace std;
+
+
+
 
 class Command {
 	string label;
@@ -28,7 +32,13 @@ public:
 
 	const string &getOperand() const;
 
+	int getDecimalOperand() const;
+
+	int getCharLength() const;
+
 	bool isPlus() const;
+
+	bool isComment() const;
 
 	char getFlag() const;
 
